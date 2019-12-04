@@ -3,5 +3,9 @@
 .settings/
 .classpath
 .project
+# IntelliJ IDEA
+sandwich-shop-manager.iml
+sandwich-shop-manager.ipr
+sandwich-shop-manager.iws
 # Maven
 target/
