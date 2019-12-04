@@ -67,4 +67,41 @@ public class SandwichShopManagerBillTest extends Assert {
         itemsOrdered.add(null);
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 0.0, 0.0);
     }
+
+    @Test
+    public void getOrderPrice_totalPriceMinus50PercentDiscountOnTheCheapestSandwich_calculated() throws TakeAwayBillException {
+        itemsOrdered.addAll(Arrays.asList(
+            primavera, // 5
+            vegetariano, // 6
+            cola, // 2.5
+            arancini, // 1.5
+            oliveascolane, // 3.5
+            giorno, // 7.0
+            acqua, // 1.0
+            contadino, // 1.5
+            vegetariano, // 6
+            primavera // 5
+        )); // 5 panini, 2 bevande, 2 fritti, totale = 39 - (0.5 * 1.5) = 38.25
+        
+        assertEquals(ssmb.getOrderPrice(itemsOrdered), 38.25, 0.0);
+    }
+
+    @Test
+    public void getOrderPrice_totalPriceMinus50PercentDiscountOnThe1stCheapestSandwich_calculated() throws TakeAwayBillException {
+        itemsOrdered.addAll(Arrays.asList(
+            primavera, // 5
+            vegetariano, // 6
+            cola, // 2.5
+            arancini, // 1.5
+            oliveascolane, // 3.5
+            giorno, // 7.0
+            acqua, // 1.0
+            contadino, // 1.5
+            vegetariano, // 6
+            primavera, // 5
+            contadino
+        )); // 6 panini, 2 bevande, 2 fritti, totale = 40.5 - (0.5 * 1.5) = 39.75
+        
+        assertEquals(ssmb.getOrderPrice(itemsOrdered), 39.75, 0.0);
+    }
 }
