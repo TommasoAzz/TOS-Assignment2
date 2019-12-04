@@ -9,7 +9,9 @@
         <module name="AvoidStarImport" />
         <module name="IllegalImport" />
         <module name="NeedBraces" />
-        <module name="LineLength" />
+        <module name="LineLength">
+            <property name="max" value="150" />
+        </module>
     </module>
     <module name="FileLength" />
     <module name="FileTabCharacter" />
