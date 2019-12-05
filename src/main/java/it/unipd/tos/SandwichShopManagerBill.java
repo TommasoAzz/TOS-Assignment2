@@ -17,7 +17,7 @@ public class SandwichShopManagerBill implements TakeAwayBill {
     @Override
     public double getOrderPrice(List<MenuItem> itemsOrdered) throws TakeAwayBillException {
         // lista nulla => non so come comportarmi => lancio eccezione
-        if(itemsOrdered == null) {
+        if (itemsOrdered == null) {
             throw new TakeAwayBillException();
         }
         /// Usare i Supplier perché gli Stream possono essere usati una volta sola
@@ -28,13 +28,24 @@ public class SandwichShopManagerBill implements TakeAwayBill {
         // Calcolo del totale dell'ordine
         double totale = menuItems.get().mapToDouble((item) -> item.getPrice()).sum();
 
+        
+        // Stream di (MenuItem t.c. getItemType() == ItemType.Panino || getItemType() == ItemType.Fritto)
+        Stream<MenuItem> panini_e_fritti = menuItems.get()
+        .filter((item) -> (item.getItemType() == ItemType.Panino || item.getItemType() == ItemType.Fritto));
+        
+        // Sconto 10% sul totale se spesa in panini e fritti maggiore di 50 euro
+        if(panini_e_fritti.mapToDouble((item) -> item.getPrice()).sum() > 50.0) {
+            totale -= totale * 0.1;
+        }
+        
         // Supplier di Stream di (MenuItem t.c. getItemType() == ItemType.Panino)
-        Supplier<Stream<MenuItem>> panini = () -> menuItems.get().filter((item) -> item.getItemType() == ItemType.Panino);
+        Supplier<Stream<MenuItem>> panini = () -> menuItems.get()
+                .filter((item) -> item.getItemType() == ItemType.Panino);
         
         // Sconto 50% panino meno caro se acquisto più di 5 panini
         if (panini.get().count() > 5) {
             double minPrice = panini.get().min(Comparator.comparing(MenuItem::getPrice)).get().getPrice();
-            return totale - (minPrice * 0.5);
+            totale -= minPrice * 0.5;
         }
 
         return totale;

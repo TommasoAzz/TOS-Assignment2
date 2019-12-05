@@ -19,9 +19,9 @@ public class SandwichShopManagerBillTest extends Assert {
     // istanzie di esempio da usare per i test
     // -- panini
     private final MenuItem contadino = new MenuItem(ItemType.Panino, "Panino Contadino", 1.5); // panino meno costoso
-    private final MenuItem primavera  = new MenuItem(ItemType.Panino, "Panino Primavera", 5.0);
+    private final MenuItem primavera = new MenuItem(ItemType.Panino, "Panino Primavera", 5.0);
     private final MenuItem vegetariano = new MenuItem(ItemType.Panino, "Panino Vegetariano", 6.0);
-    private final MenuItem giorno =  new MenuItem(ItemType.Panino, "Panino del giorno", 7.0); // panino più costoso
+    private final MenuItem giorno = new MenuItem(ItemType.Panino, "Panino del giorno", 7.0); // panino più costoso
     // -- bevande
     private final MenuItem cola = new MenuItem(ItemType.Bevanda, "Cola", 2.5);
     private final MenuItem acqua = new MenuItem(ItemType.Bevanda, "Acqua", 1.0);
@@ -36,15 +36,14 @@ public class SandwichShopManagerBillTest extends Assert {
 
     @Test
     public void getOrderPrice_totalPrice_calculated() throws TakeAwayBillException {
-        itemsOrdered.addAll(Arrays.asList(
-            primavera, // 5
-            vegetariano, // 6
-            cola, // 2.5
-            arancini, // 1.5
-            oliveascolane, // 3.5
-            giorno, // 7.0
-            acqua, // 1.0
-            contadino // 1.5
+        itemsOrdered.addAll(Arrays.asList(primavera, // 5
+                vegetariano, // 6
+                cola, // 2.5
+                arancini, // 1.5
+                oliveascolane, // 3.5
+                giorno, // 7.0
+                acqua, // 1.0
+                contadino // 1.5
         )); // 3 panini, 2 bevande, 2 fritti, totale = 28
 
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 28, 0.0);
@@ -87,14 +86,13 @@ public class SandwichShopManagerBillTest extends Assert {
             vegetariano, // 6
             primavera // 5
         )); // 5 panini, 2 bevande, 2 fritti, totale = 39 - (0.5 * 1.5) = 38.25
-        
+
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 38.25, 0.0);
     }
 
     @Test
     public void getOrderPrice_totalPriceMinus50PercentDiscountOnThe1stCheapestSandwich_calculated() throws TakeAwayBillException {
-        itemsOrdered.addAll(Arrays.asList(
-            primavera, // 5
+        itemsOrdered.addAll(Arrays.asList(primavera, // 5
             vegetariano, // 6
             cola, // 2.5
             arancini, // 1.5
@@ -106,7 +104,58 @@ public class SandwichShopManagerBillTest extends Assert {
             primavera, // 5
             contadino
         )); // 6 panini, 2 bevande, 2 fritti, totale = 40.5 - (0.5 * 1.5) = 39.75
-        
+
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 39.75, 0.0);
+    }
+
+    @Test
+    public void getOrderPrice_10PercentDiscountOnMoreThan50EurosOnSandiwichesAndFrieds_calculated()
+            throws TakeAwayBillException {
+        itemsOrdered.addAll(Arrays.asList(
+            giorno, // 7.0
+            giorno, // 7.0
+            giorno, // 7.0
+            giorno, // 7.0
+            arancini, // 1.5
+            arancini, // 1.5
+            arancini, // 1.5
+            arancini, // 1.5
+            arancini, // 1.5
+            oliveascolane, // 3.5
+            oliveascolane, // 3.5
+            oliveascolane, // 3.5
+            oliveascolane, // 3.5
+            oliveascolane, // 3.5
+            acqua, // 1.0
+            acqua, // 1.0
+            acqua, // 1.0
+            cola // 2.5
+        )); // 4 panini, 4 bevande, 9 fritti, totale = 57.5 - (57.5 * 0.1) - (0.5 * 1.5) = 51
+
+        assertEquals(ssmb.getOrderPrice(itemsOrdered), 52.65, 0.0);
+    }
+
+    @Test
+    public void getOrderPrice_10PercentDiscountAnd50PercentDiscountCheapestSandwichOnMoreThan50EurosOnSandiwichesAndFrieds_calculated()
+            throws TakeAwayBillException {
+        itemsOrdered.addAll(Arrays.asList(
+            primavera, // 5
+            vegetariano, // 6
+            cola, // 2.5
+            arancini, // 1.5
+            oliveascolane, // 3.5
+            giorno, // 7.0
+            acqua, // 1.0
+            contadino, // 1.5
+            vegetariano, // 6
+            primavera, // 5
+            contadino, // 1.5
+            oliveascolane, // 3.5
+            arancini, // 1.5
+            primavera, // 5
+            giorno // 7.0
+        )); // 9 panini, 2 bevande, 4 fritti, totale = 57.5 - (57.5 * 0.1) - (0.5 * 1.5) = 51
+
+        assertEquals(ssmb.getOrderPrice(itemsOrdered), 51.0, 0.0);
     }
 }
