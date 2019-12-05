@@ -158,4 +158,13 @@ public class SandwichShopManagerBillTest extends Assert {
 
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 51.0, 0.0);
     }
+
+    @Test(expected = TakeAwayBillException.class)
+    public void getOrderPrice_OrderWithMoreThan30Items_exceptionThrown() throws TakeAwayBillException {
+        for(int i = 0; i < 31; ++i) {
+            itemsOrdered.add(acqua);
+        }
+
+        assertEquals(ssmb.getOrderPrice(itemsOrdered), 31.0, 0.0);
+    }
 }

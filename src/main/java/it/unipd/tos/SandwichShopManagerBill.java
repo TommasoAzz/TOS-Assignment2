@@ -24,6 +24,12 @@ public class SandwichShopManagerBill implements TakeAwayBill {
 
         /// Supplier di Stream di MenuItem non nulli
         Supplier<Stream<MenuItem>> menuItems = () -> itemsOrdered.stream().filter((item) -> item != null);
+        
+        // Se ordine ha più di 30 elementi, lanciare un'eccezione e prevedere messaggio di errore
+        if(menuItems.get().count() > 30) {
+            System.err.println("[SandwichShopManagerBill] ERRORE: Non è possibile ordinare più di 30 elementi.");
+            throw new TakeAwayBillException();
+        }
 
         // Calcolo del totale dell'ordine
         double totale = menuItems.get().mapToDouble((item) -> item.getPrice()).sum();
