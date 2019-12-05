@@ -33,7 +33,6 @@ public class SandwichShopManagerBill implements TakeAwayBill {
 
         // Calcolo del totale dell'ordine
         double totale = menuItems.get().mapToDouble((item) -> item.getPrice()).sum();
-
         
         // Stream di (MenuItem t.c. getItemType() == ItemType.Panino || getItemType() == ItemType.Fritto)
         Stream<MenuItem> panini_e_fritti = menuItems.get()
@@ -52,6 +51,13 @@ public class SandwichShopManagerBill implements TakeAwayBill {
         if (panini.get().count() > 5) {
             double minPrice = panini.get().min(Comparator.comparing(MenuItem::getPrice)).get().getPrice();
             totale -= minPrice * 0.5;
+        }
+
+        /// il totale deve essere maggiore di 0 per scelta progettuale.
+        /// se vengono inseriti elementi nulli o la lista è vuota il totale è 0.0 euro
+        // se l'importo totale è minore di 10 euro, e ci sono MenuItem nell'ordine, aggiungere una commissione di 0,50 euro
+        if(totale > 0.0 && totale < 10.0) {
+            totale += 0.50;
         }
 
         return totale;
