@@ -20,10 +20,6 @@ public class MenuItem {
         return itemType;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public double getPrice() {
         return price;
     }
