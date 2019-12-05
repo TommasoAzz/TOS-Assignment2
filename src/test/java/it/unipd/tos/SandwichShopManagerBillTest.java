@@ -68,6 +68,11 @@ public class SandwichShopManagerBillTest extends Assert {
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 0.0, 0.0);
     }
 
+    @Test(expected = TakeAwayBillException.class)
+    public void getOrderPrice_nullList_exceptionThrown() throws TakeAwayBillException {
+        assertEquals(ssmb.getOrderPrice(null), 0.0, 0.0);
+    }
+
     @Test
     public void getOrderPrice_totalPriceMinus50PercentDiscountOnTheCheapestSandwich_calculated() throws TakeAwayBillException {
         itemsOrdered.addAll(Arrays.asList(

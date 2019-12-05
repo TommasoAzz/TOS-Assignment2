@@ -16,6 +16,10 @@ import it.unipd.tos.model.MenuItem;
 public class SandwichShopManagerBill implements TakeAwayBill {
     @Override
     public double getOrderPrice(List<MenuItem> itemsOrdered) throws TakeAwayBillException {
+        // lista nulla => non so come comportarmi => lancio eccezione
+        if(itemsOrdered == null) {
+            throw new TakeAwayBillException();
+        }
         /// Usare i Supplier perché gli Stream possono essere usati una volta sola
 
         /// Supplier di Stream di MenuItem non nulli
