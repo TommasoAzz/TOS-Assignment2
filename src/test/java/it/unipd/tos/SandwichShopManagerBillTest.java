@@ -124,7 +124,7 @@ public class SandwichShopManagerBillTest extends Assert {
                 contadino, // 1.5
                 vegetariano, // 6
                 primavera, // 5
-                contadino
+                contadino // 1.5
             )
         ); // 6 panini, 2 bevande, 2 fritti, totale = 40.5 - (0.5 * 1.5) = 39.75
 
@@ -154,7 +154,7 @@ public class SandwichShopManagerBillTest extends Assert {
                 acqua, // 1.0
                 cola // 2.5
             )
-        ); // 4 panini, 4 bevande, 9 fritti, totale = 57.5 - (57.5 * 0.1) - (0.5 * 1.5) = 51
+        ); // 4 panini, 4 bevande, 9 fritti, totale = 58.5 - (58.5 * 0.1) = 52.65
 
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 52.65, 0.0);
     }
@@ -189,7 +189,7 @@ public class SandwichShopManagerBillTest extends Assert {
     public void getOrderPrice_OrderWithMoreThan30Items_exceptionThrown() throws TakeAwayBillException {
         for(int i = 0; i < 31; ++i) {
             itemsOrdered.add(acqua);
-        }
+        } // 31 bevande, totale = 31 (ma lanciata eccezione)
 
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 31.0, 0.0);
     }
@@ -198,7 +198,7 @@ public class SandwichShopManagerBillTest extends Assert {
     public void getOrderPrice_50centsCommissionOnTotalOrderSmallerThan10Euros_calculated() throws TakeAwayBillException {
         for(int i = 0; i < 5; ++i) {
             itemsOrdered.add(acqua);
-        }
+        } // 5 bevande, totale = 5 + 0.5 = 5.5
 
         assertEquals(ssmb.getOrderPrice(itemsOrdered), 5.5, 0.0);
     }
